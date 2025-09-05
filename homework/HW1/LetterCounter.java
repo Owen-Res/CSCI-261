@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
  * information regarding the content of a given string.
  * 
  * @author Owen Resnikoff
- * @version 0.1
+ * @version 9/4/2025
  */
 public class LetterCounter {
   final int ALPHABET_LENGTH = 26;
@@ -51,9 +51,13 @@ public class LetterCounter {
    * count the number of occurances of each alphabetic character in the string.
    * update the internal letter frequency table accordingly.
    * 
-   * @param text the string from which the letters are counted
+   * @param text the string from which the letters are counted, passing in the
+   *             value null results in no change
    */
   public void countLetters(String text) {
+    if (text == null)
+      return; // in the case of null text nothing happens and program execution continues
+
     for (int i = 0; i < text.length(); i++) {
       int characterIndex = letterToIndex(text.charAt(i));
       if (characterIndex != -1)
@@ -82,20 +86,48 @@ public class LetterCounter {
   }
 
   public String toString() {
-    final DecimalFormat PERCENT_DECIMAL_FORMAT = new DecimalFormat(".00");
-    StringBuilder sb = new StringBuilder();
-    int totalCount = getTotalCount();
-    totalCount = Math.max(totalCount, 1); // we need to make sure this isn't 0 or else we risk a division by 0 error
+    DecimalFormat percentFormat = new DecimalFormat(".00"); // specify the format for printing decimal values
+    StringBuilder sb = new StringBuilder(); // a string build is used to accumulate each line of the histogram
+
+    /**
+     * these values are unaffected by the letter index, and thus are only computed
+     * once outside of the loop
+     */
+    int maxCount = getMaxCount(); // the maximum value in the letterCounts array
+    int totalCount = getTotalCount(); // the sum of the letterCounts array
 
     for (int i = 0; i < ALPHABET_LENGTH; i++) {
       char ch = (char) (LETTER_START + i); // find character cooresponding to i'th letter in the alphabet
       int letterCount = letterFrequency[i];
 
-      int barLength = (int) (((float) letterCount / getMaxCount()) * 60); // length of the bar in the histogram
-      String barString = "#".repeat(barLength);
-      float percentage = 100.f * (letterFrequency[i] / (float) totalCount);
+      /**
+       * the length of a given bar is such that the number with the a count equal to
+       * maxCount will be of length 60
+       * 
+       * Note: in the case that maxCount is zero the equation will evaulate to NaN,
+       * because the value is casted to an integer NaN will become 0 which is the
+       * desired value
+       */
+      int barLength = (int) ((letterCount * 60.) / maxCount);
+      String barString = "#".repeat(barLength); // the character # repeated barLength times
 
-      String lineString = String.format("%c:  %s  (%s%%)\n", ch, barString, PERCENT_DECIMAL_FORMAT.format(percentage));
+      // calculate the percentage or frequency at which the letter appeared
+      double percentage = (letterCount * 100.) / Math.max(totalCount, 1); // the max function is used here to avoid
+                                                                          // divsion by 0
+
+      /**
+       * A string of the format
+       * ch: barString (percentage%)
+       * 
+       * Example:
+       * ch = 'a'
+       * barLength = 5
+       * percentage = 1.32
+       * 
+       * a: ##### (1.32%)
+       */
+      String lineString = String.format("%c:  %s  (%s%%)\n", ch, barString, percentFormat.format(percentage));
+
       sb.append(lineString);
     }
 
