@@ -11,7 +11,7 @@ public class LetterCounter {
   final int ALPHABET_LENGTH = 26;
   final char LETTER_START = 'a';
 
-  private int[] letterFrequency; // created with length = ALPHABET_LENGTH
+  private int[] letterCounts; // created with length = ALPHABET_LENGTH
 
   /**
    * convert a given character to the corresponding index in the letter frequency
@@ -32,11 +32,11 @@ public class LetterCounter {
   /**
    * find the largest number of times any given letter has been counted
    * 
-   * @return the largest Count in the array if letter counts
+   * @return the largest value in letterCounts[]
    */
   private int getMaxCount() {
-    int max = letterFrequency[0];
-    for (int n : letterFrequency) {
+    int max = letterCounts[0];
+    for (int n : letterCounts) {
       max = Math.max(n, max);
     }
 
@@ -44,7 +44,7 @@ public class LetterCounter {
   }
 
   public LetterCounter() {
-    letterFrequency = new int[ALPHABET_LENGTH];
+    letterCounts = new int[ALPHABET_LENGTH];
   }
 
   /**
@@ -61,7 +61,7 @@ public class LetterCounter {
     for (int i = 0; i < text.length(); i++) {
       int characterIndex = letterToIndex(text.charAt(i));
       if (characterIndex != -1)
-        letterFrequency[characterIndex]++;
+        letterCounts[characterIndex]++;
     }
   }
 
@@ -72,7 +72,7 @@ public class LetterCounter {
    */
   public int getTotalCount() {
     int count = 0;
-    for (int n : letterFrequency)
+    for (int n : letterCounts)
       count += n;
     return count;
   }
@@ -81,8 +81,9 @@ public class LetterCounter {
    * reset the count of each letter to 0
    */
   public void reset() {
+    // loop over letterCounts[] and set each value to 0
     for (int i = 0; i < ALPHABET_LENGTH; i++)
-      letterFrequency[i] = 0;
+      letterCounts[i] = 0;
   }
 
   public String toString() {
@@ -98,22 +99,22 @@ public class LetterCounter {
 
     for (int i = 0; i < ALPHABET_LENGTH; i++) {
       char ch = (char) (LETTER_START + i); // find character cooresponding to i'th letter in the alphabet
-      int letterCount = letterFrequency[i];
+      int counti = letterCounts[i];
 
       /**
        * the length of a given bar is such that the number with the a count equal to
        * maxCount will be of length 60
        * 
        * Note: in the case that maxCount is zero the equation will evaulate to NaN,
-       * because the value is casted to an integer NaN will become 0 which is the
-       * desired value
+       * because the value is casted to an integer NaN will become 0 which is
+       * incidentally the desired value
        */
-      int barLength = (int) ((letterCount * 60.) / maxCount);
+      int barLength = (int) ((counti * 60.) / maxCount);
       String barString = "#".repeat(barLength); // the character # repeated barLength times
 
       // calculate the percentage or frequency at which the letter appeared
-      double percentage = (letterCount * 100.) / Math.max(totalCount, 1); // the max function is used here to avoid
-                                                                          // divsion by 0
+      double percentage = (counti * 100.) / Math.max(totalCount, 1); // the max function is used here to avoid
+                                                                     // divsion by 0
 
       /**
        * A string of the format
