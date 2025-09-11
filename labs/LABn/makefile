@@ -1,8 +1,9 @@
 MAIN_FILE = Main
+BUILD_FOLDER = classfiles
 .PHONY: run
 
 build:
-	javac $(MAIN_FILE).java
+	javac -d $(BUILD_FOLDER) $(MAIN_FILE).java
 
 run: build
-	java $(MAIN_FILE)
+	java -classpath $(BUILD_FOLDER) $(MAIN_FILE)
