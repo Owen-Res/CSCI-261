@@ -1,0 +1,6 @@
+javac -d classfiles Main.java
+java -classpath classfiles Main
+ .  X  X 
+ .  .  . 
+ .  .  . 
+
