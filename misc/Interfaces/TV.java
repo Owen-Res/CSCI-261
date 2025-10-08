@@ -1,4 +1,5 @@
-public class TV implements Controllable {
+public class TV implements Controllable, Sellable{
+    public static final double TV_PRICE = 100.;
     public static final int MAX_VOL = 20;
     protected int volume = 0;
     protected boolean muted = false;
@@ -24,6 +25,16 @@ public class TV implements Controllable {
     @Override
     public void down() {
         volume = Math.max(volume - 1, 0);
+    }
+
+    @Override
+    public String getDescription(){
+        return "A TV";
+    }
+
+    @Override
+    public double getPrice(){
+        return TV_PRICE;
     }
 
     public String toString() {
