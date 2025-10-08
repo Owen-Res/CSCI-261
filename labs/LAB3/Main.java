@@ -29,5 +29,10 @@ public class Main {
 
 		// print final status of library
 		lib.printLibrary();
+
+		lib.organize();
+		printDelimiter();
+
+		lib.printLibrary();
 	}
 }

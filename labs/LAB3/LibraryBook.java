@@ -4,7 +4,7 @@
  * @author David
  * @version 9/16/2019
  */
-public abstract class LibraryBook extends Book
+public abstract class LibraryBook extends Book implements Comparable<LibraryBook>
 {
     private String callno;
     
@@ -58,6 +58,11 @@ public abstract class LibraryBook extends Book
         return ((LibraryBook)other).callno.equals(callno);
     }
     
+
+    @Override
+    public int compareTo(LibraryBook other){
+        return callno.compareTo(other.callno);
+    }   
     /**
      * This method eventually handles processing for a patron to check out a 
      * book. A due date also is recorded.

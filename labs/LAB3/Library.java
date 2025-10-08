@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Library {
     private ArrayList<LibraryBook> books;
@@ -20,12 +21,10 @@ public class Library {
     }
 
     public LibraryBook findBook(LibraryBook book) {
-        for (LibraryBook lb : books) {
-            if (lb.equals(book)) {
-                return lb;
-            }
-        }
+        int idx = Collections.binarySearch(books, book);
 
+        if (idx >= 0)
+            return books.get(idx);
         return null;
     }
 
@@ -49,5 +48,9 @@ public class Library {
         else {
             candidate.returned();
         }
+    }
+
+    public void organize() {
+        Collections.sort(books);
     }
 }
